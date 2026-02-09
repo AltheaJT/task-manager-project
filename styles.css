@@ -54,7 +54,18 @@
     cursor: pointer;
 }
 
-ul li{
+#filter-button {
+    background-color:#726de0;
+    color:#0d0f30;
+    padding: 5px;
+    margin-left: 5px;
+    border: none;
+    outline: none;
+    border-radius: 10px;    
+    cursor: pointer;
+}
+
+/*ul li{
     list-style: none;
     font-size: 14px;
     padding: 12px 0px;
@@ -83,4 +94,21 @@ ul li.checked {
 
 ul li.checked::before {
     background-image: url(images/checked.png);
+}*/
+
+#modal-overlay {
+    display: none;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    background-color:black;
+    z-index: 1000;
+}
+
+/* overlay{
+    z-index: 1000;
+} */
+
+#modal-overlay .active {
+    display: flex;
 }

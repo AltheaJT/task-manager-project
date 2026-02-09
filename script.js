@@ -15,20 +15,70 @@ class TodoTask {
     }
 }
 
-
-
-addTaskBtn.addEventListener('click', function() {openModal
+addTaskBtn.addEventListener('click', function() {
+    openModal();
 });
+/*filterBtn.addEventListener('click', function(event) {
+   event.stopPropagation;
+    toggleFilterDropdown();
+} )*/
 
+function createUniqueId(){
+    let timeNow = Date.now();
+
+    if (timeNow <= lastTaskId) {
+        lastTaskId++;
+        return 'task-' + lastTaskId;
+    }
+
+    lastTaskId = timeNow;
+    return 'task-' + timeNow;
+}
+
+let isEditingMode = false;
+let title= document.getElementById("modal-title");
+let taskTitle = document.getElementById("task-title");
+let priorityInput = document.getElementById("task-priority");
+let dueDateInput = document.getElementById("task-due-date");
+
+//Modal Functions
+//Modal for adding tasks (not displaying, however)
 function openModal(){
+    isEditingMode = false;
 
+    title.textContent = 'Add New Task';
+    taskTitle.value = '';
+    taskTitle.placeholder = 'New Task!';
+    priorityInput.value = '';
+    dueDateInput.value = '';
+
+    let overlay = document.getElementById('modal-overlay');
+    overlay.classList.add('active');
+    taskTitle.focus();
+}
+
+function openEditModal(taskId){
+    isEditingMode = true;
 }
 
 function addTask() {
+    let newTask = new TodoTask(createUniqueId(), taskTitle.value, priorityInput.value, false, dueDateInput.value);
+    allTasks.push(newTask);
+    
+    let overlay = document.getElementById('modal-overlay');
+    overlay.classList.remove('active');
 
+    renderTasks();
 }
 
 function editTask(){
 
 }
 
+function deleteTask(){
+
+}
+
+function renderTasks() {
+    
+}

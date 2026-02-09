@@ -12,7 +12,13 @@
             <h4 id="app-title">To do app</h4>
             <div class="button">
                 <button id="add-task-button"><b>Add Task</b></button>
-                <button id="filter-button">Filter</button>
+                <button id="filter-button"><b>Filter</b>
+                    <select id="task-filter-options">
+                        <option>All</option>
+                        <option>Complete</option>
+                        <option>Pending</option>
+                    </select>
+                </button>
             </div> 
             <div class="task-header">
                 <span id="task-heading">Task</span>
@@ -25,6 +31,22 @@
                     <li>Task 3</li>-->
                 </ul>
             </div>
+        </div>
+        <div id="modal-overlay">
+            <h5 id="modal-title"></h5>
+            <form>
+                <input type="text" id="task-title">
+                <label for="priority-options">Select the task priority</label>
+                <select id="task-priority" name="priority-options">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                </select>
+                <label for="due-date">Due Date</label>
+                <input id="task-due-date" type="date" name="due-date" placeholder="Due Date">
+                <button id="submit-task-btn">Submit</button>
+            </form>
+            <button id="close-btn">Close</button>
         </div>
     </div>
     <script src="script.js"></script>
