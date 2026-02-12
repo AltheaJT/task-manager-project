@@ -1,9 +1,12 @@
 const addTaskBtn = document.getElementById("add-task-button");
 const closeBtn = document.getElementById("close-btn");
-const taskList = document.getElementById("task-items-container"); //list-container
+const submitBtn = document.getElementById("submit-task-btn");
+const taskList = document.getElementById("list-container"); //list-container
 const filterList= document.getElementById("task-filter-options");
-let allTasks = [];
 let lastTaskId = 0;
+
+console.log("Add Task Button:", addTaskBtn);
+console.log("Submit Button:", submitBtn);
 
 
 class TodoTask {
@@ -35,6 +38,8 @@ function createUniqueId(){
 }
 
 let isEditingMode = false;
+let editingTaskId = null;
+
 const title= document.getElementById("modal-title");
 const taskTitle = document.getElementById("task-title");
 const priorityInput = document.getElementById("task-priority");
@@ -45,6 +50,7 @@ const overlay = document.getElementById("modal-overlay");
 //Modal for adding tasks (not displaying, however)
 function openModal(){
     isEditingMode = false;
+    editingTaskId = null;
 
     console.log('Modal is opened');
     title.textContent = 'Add New Task';
@@ -56,14 +62,16 @@ function openModal(){
     overlay.classList.add('active');
 }
 
-function openEditModal(taskId){
+function openEditModal(task){
+    openModal();
     isEditingMode = true; 
 
-    
     title.textContent = 'Edit Task';
-    taskTitle.value = taskId.title;
-    priorityInput.value = taskId.priority;
-    dueDateInput.value =  taskId.dueDate;
+    taskTitle.value = task.title;
+    priorityInput.value = task.priority;
+    dueDateInput.value =  task.dueDate;
+
+    overlay.classList.add('active');
 }
 
 
@@ -74,7 +82,12 @@ class TaskManager {
     }
 
     addTask() {
-        let newTask = new TodoTask(createUniqueId(), taskTitle.value, priorityInput.value, false, dueDateInput.value);
+        let newTask = new TodoTask(
+            createUniqueId(), 
+            taskTitle.value, 
+            priorityInput.value, 
+            false, 
+            dueDateInput.value);
         this.tasks.push(newTask);
         
         overlay.classList.remove('active');
@@ -82,32 +95,94 @@ class TaskManager {
     }
 
     editTask(taskId, newTitle, newPriority, newDueDate) {
-        for(let i = 0; i < this.tasks.length; i++) {
-            if(this.tasks[i].id === taskId) {
-                this.tasks[i].title = newTitle;
-                this.tasks[i].priority = newPriority;
-                this.tasks[i].dueDate = newDueDate;
-                break;
-            }
+        const task = this.tasks.find(t => t.id === taskId);
+        if (task) {
+            task.title = newTitle;
+            task.priority = newPriority;
+            task.dueDate = newDueDate;
         }
+        renderTasks();
     }
 
     deleteTask(taskId) {
-        let newTaskList = [];
-        for(let i = 0; i < this.tasks.length; i++) {
-            if(this.tasks[i].id !== taskId) {
-                newTaskList.push(this.tasks[i]);
-            }
-        }
-        this.tasks = newTaskList;  
+        this.tasks = this.tasks.filter(task => task.id !== taskId);  
     }
 
     toggleTaskCompletion(taskId) {
-        
+        const task = this.tasks.find(t => t.id === taskId);
+        if (task) {
+            task.completed = !task.completed;
+        }  
     }
-
 }
 
-function renderTasks() {
-    
+const taskManager = new TaskManager();
+
+function deleteTask(taskId) {
+    taskManager.deleteTask(taskId);
+    renderTasks();
 }
+
+submitBtn.addEventListener("click", (e) => {
+    e.preventDefault(); // Prevent form submission
+    taskManager.addTask();
+    renderTasks();
+});
+
+function renderTasks(tasks = taskManager.tasks) {
+    taskList.innerHTML = '';
+
+    tasks.forEach(task => {
+        const taskItem = document.createElement("li");
+        taskItem.className = `task-item ${task.completed ? "completed" : ""}`;
+        taskItem.textContent = task.title;
+        taskItem.dataset.id = task.id;
+
+        if (task.dueDate){
+            const dueDate = document.createElement("span");
+            dueDate.className = "due-date";
+            dueDate.textContent = `${task.dueDate}`;
+            taskItem.appendChild(dueDate);
+        }
+
+        //Checkbox for task completion
+        const checkbox = document.createElement ("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = task.completed;
+        checkbox.addEventListener("change", () => {
+            taskManager.toggleTaskCompletion(task.id);
+            renderTasks();
+        });
+
+        //Action buttons for edit and delete
+        const actionsContainer = document.createElement("div");
+        actionsContainer.className = "actions-container";
+
+        //Edit button
+        const editBtn = document.createElement("button");
+        editBtn.className = "edit-button";
+        editBtn.innerHTML = `<i class="fa-solid fa-pen"></i>`;
+        editBtn.addEventListener("click", () => openEditModal(task));
+
+        //Delete button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-button";
+        deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+        deleteBtn.addEventListener("click", () => {
+            taskManager.deleteTask(task.id);
+            renderTasks();
+        });
+
+        //<button class="delete-button"><i class="fa-solid fa-trash"></i></button>
+
+        actionsContainer.append(editBtn, deleteBtn);
+        taskItem.append(checkbox, actionsContainer);
+        taskList.appendChild(taskItem);
+
+    });
+}
+
+filterList.addEventListener("change", () => {
+    const filterValue = filterList.value;
+    let filteredTasks = [];
+});    
