@@ -62,9 +62,11 @@ function openModal(){
     overlay.classList.add('active');
 }
 
+//same as submit
 function openEditModal(task){
     openModal();
     isEditingMode = true; 
+    editingTaskId = task.id;
 
     title.textContent = 'Edit Task';
     taskTitle.value = task.title;
@@ -74,6 +76,11 @@ function openEditModal(task){
     overlay.classList.add('active');
 }
 
+const filterConditions = {
+    All: () => true,
+    Complete: task => task.completed, 
+    Pending: task => !task.completed 
+};
 
 class TaskManager {
     constructor() {
@@ -114,6 +121,11 @@ class TaskManager {
             task.completed = !task.completed;
         }  
     }
+
+    getFilteredTasks(filter) {
+        const condition = filterConditions[filter];
+        return this.tasks.filter(condition);  
+    }
 }
 
 const taskManager = new TaskManager();
@@ -123,14 +135,25 @@ function deleteTask(taskId) {
     renderTasks();
 }
 
+
+//Subjected to changes, might delete later on
 submitBtn.addEventListener("click", (e) => {
     e.preventDefault(); // Prevent form submission
+
+    if (isEditingMode) {
+        taskManager.editTask(editingTaskId, taskTitle.value, priorityInput.value, dueDateInput.value);
+    } else {
     taskManager.addTask();
-    renderTasks();
+    }
+
+    isEditingMode = false;
+    editingTaskId = null;
+    overlay.classList.remove('active');
 });
 
 function renderTasks(tasks = taskManager.tasks) {
     taskList.innerHTML = '';
+    console.log("Rendering tasks:", tasks);
 
     tasks.forEach(task => {
         const taskItem = document.createElement("li");
@@ -161,13 +184,13 @@ function renderTasks(tasks = taskManager.tasks) {
         //Edit button
         const editBtn = document.createElement("button");
         editBtn.className = "edit-button";
-        editBtn.innerHTML = `<i class="fa-solid fa-pen"></i>`;
+        editBtn.innerHTML = `<i class="fa-solid fa-pen edit-color"></i>`;
         editBtn.addEventListener("click", () => openEditModal(task));
 
         //Delete button
         const deleteBtn = document.createElement("button");
         deleteBtn.className = "delete-button";
-        deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+        deleteBtn.innerHTML = `<i class="fa-solid fa-trash-can delete-color"></i>`;
         deleteBtn.addEventListener("click", () => {
             taskManager.deleteTask(task.id);
             renderTasks();
@@ -184,5 +207,7 @@ function renderTasks(tasks = taskManager.tasks) {
 
 filterList.addEventListener("change", () => {
     const filterValue = filterList.value;
-    let filteredTasks = [];
+    const filteredTasks = taskManager.getFilteredTasks(filterValue);
+
+    renderTasks(filteredTasks);
 });    
