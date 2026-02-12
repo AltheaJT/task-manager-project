@@ -196,3 +196,26 @@
     color: #000; 
 }
 
+.priority-label {
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+    margin-bottom: 0.3rem; /* Adjust spacing as needed */
+}
+
+.priority-high {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.priority-medium {
+    background-color: #fff8e1;
+    color: #ff8f00;
+}
+
+.priority-low {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}

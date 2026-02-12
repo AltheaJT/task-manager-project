@@ -8,7 +8,6 @@ let lastTaskId = 0;
 console.log("Add Task Button:", addTaskBtn);
 console.log("Submit Button:", submitBtn);
 
-
 class TodoTask {
     constructor(id,title,priority,completed=false,dueDate) {
         this.id = id;
@@ -160,6 +159,12 @@ function renderTasks(tasks = taskManager.tasks) {
         taskItem.className = `task-item ${task.completed ? "completed" : ""}`;
         taskItem.textContent = task.title;
         taskItem.dataset.id = task.id;
+
+        // Priority label (below title)
+        const priorityLabel = document.createElement("div");
+        priorityLabel.className = `priority-label priority-${task.priority.toLowerCase()}`;
+        priorityLabel.textContent = task.priority;
+        taskItem.appendChild(priorityLabel);
 
         if (task.dueDate){
             const dueDate = document.createElement("span");
