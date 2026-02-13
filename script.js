@@ -139,6 +139,14 @@ function deleteTask(taskId) {
 submitBtn.addEventListener("click", (e) => {
     e.preventDefault(); // Prevent form submission
 
+    //to handle required field
+    const taskTitleError = document.getElementById('task-title-error');
+    if (!taskTitle.value.trim()) {
+        taskTitleError.style.display = 'block'; 
+        taskTitle.focus(); 
+        return; 
+    }
+
     if (isEditingMode) {
         taskManager.editTask(editingTaskId, taskTitle.value, priorityInput.value, dueDateInput.value);
     } else {

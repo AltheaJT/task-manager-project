@@ -219,3 +219,10 @@
     background-color: #e8f5e9;
     color: #2e7d32;
 }
+
+.error-message {
+    display: none;
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
