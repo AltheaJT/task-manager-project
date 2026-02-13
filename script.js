@@ -1,7 +1,7 @@
 const addTaskBtn = document.getElementById("add-task-button");
 const closeBtn = document.getElementById("close-btn");
 const submitBtn = document.getElementById("submit-task-btn");
-const taskList = document.getElementById("list-container"); //list-container
+const taskList = document.getElementById("list-container"); 
 const filterList= document.getElementById("task-filter-options");
 let lastTaskId = 0;
 
@@ -46,7 +46,6 @@ const dueDateInput = document.getElementById("task-due-date");
 const overlay = document.getElementById("modal-overlay");
 
 //Modal Functions
-//Modal for adding tasks (not displaying, however)
 function openModal(){
     isEditingMode = false;
     editingTaskId = null;
@@ -61,7 +60,6 @@ function openModal(){
     overlay.classList.add('active');
 }
 
-//same as submit
 function openEditModal(task){
     openModal();
     isEditingMode = true; 
@@ -125,6 +123,11 @@ class TaskManager {
         const condition = filterConditions[filter];
         return this.tasks.filter(condition);  
     }
+
+    sortTasksByPriority() {
+        const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+        this.tasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+    }
 }
 
 const taskManager = new TaskManager();
@@ -134,8 +137,6 @@ function deleteTask(taskId) {
     renderTasks();
 }
 
-
-//Subjected to changes, might delete later on
 submitBtn.addEventListener("click", (e) => {
     e.preventDefault(); // Prevent form submission
 
@@ -224,3 +225,10 @@ filterList.addEventListener("change", () => {
 
     renderTasks(filteredTasks);
 });    
+
+//delete if it doesn't work
+const sortByPriorityBtn = document.getElementById('sort-by-priority');
+sortByPriorityBtn.addEventListener('click', () => {
+    taskManager.sortTasksByPriority();
+    renderTasks();
+});

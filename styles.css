@@ -40,9 +40,6 @@
     margin-bottom: 15px;
     justify-content: space-evenly;
 }
-/* #task-due-date{
-    background-color: white;
-} */
 
 .button {
     display: flex;
@@ -180,9 +177,6 @@
     cursor: pointer;
 }
 
-/*#modal-content button:hover {
-    background-color: #0056b3; /* Darker blue on hover 
-}*/
 
 #close-btn {
     align-self: flex-end;
@@ -197,12 +191,12 @@
 }
 
 .priority-label {
-    font-size: 0.75rem;
+    font-size: 12px;
     font-weight: bold;
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.25rem;
+    padding: 4px 8px;
+    border-radius: 4px;
     display: inline-block;
-    margin-bottom: 0.3rem; /* Adjust spacing as needed */
+    margin-bottom: 5px; 
 }
 
 .priority-high {
@@ -223,6 +217,19 @@
 .error-message {
     display: none;
     color: red;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+#sort-by-priority{
+    justify-self: flex-start;
+    background-color:#726de0;
+    color:#0d0f30;
+    width: 20%;
+    margin-top: 5px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    border-radius: 5px;    
+    cursor: pointer;
 }
