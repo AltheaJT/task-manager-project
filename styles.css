@@ -220,16 +220,3 @@
     font-size: 14px;
     margin-top: 5px;
 }
-
-#sort-by-priority{
-    justify-self: flex-start;
-    background-color:#726de0;
-    color:#0d0f30;
-    width: 20%;
-    margin-top: 5px;
-    padding: 5px;
-    border: none;
-    outline: none;
-    border-radius: 5px;    
-    cursor: pointer;
-}

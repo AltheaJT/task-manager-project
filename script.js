@@ -123,11 +123,6 @@ class TaskManager {
         const condition = filterConditions[filter];
         return this.tasks.filter(condition);  
     }
-
-    sortTasksByPriority() {
-        const priorityOrder = { High: 1, Medium: 2, Low: 3 };
-        this.tasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
-    }
 }
 
 const taskManager = new TaskManager();
@@ -226,9 +221,4 @@ filterList.addEventListener("change", () => {
     renderTasks(filteredTasks);
 });    
 
-//delete if it doesn't work
-const sortByPriorityBtn = document.getElementById('sort-by-priority');
-sortByPriorityBtn.addEventListener('click', () => {
-    taskManager.sortTasksByPriority();
-    renderTasks();
-});
+
